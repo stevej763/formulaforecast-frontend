@@ -1,26 +1,31 @@
 // src/app/home/Header.tsx
-'use client';
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../api/authenticationApiClient';
+"use client";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../api/authenticationApiClient";
 
 type HeaderProps = {
   onAccountClick: () => void;
-}
+};
 
-
- const Header = ({onAccountClick}: HeaderProps) => {
+const Header = ({ onAccountClick }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-     logout().then(() => {
-       navigate('/');
-     })
+    logout().then(() => {
+      navigate("/");
+    });
   };
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-black/90 border-b border-gray-800 flex items-center justify-between h-14 shadow px-4">
       <div className="flex items-center gap-2">
-        <img src="/logo-01-no-background.png" alt="Formula Forecast Logo" width={32} height={32} className="h-8 w-8 object-contain" />
+        <img
+          src="/logo-01-no-background.png"
+          alt="Formula Forecast Logo"
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+        />
         <span className="text-xl font-bold text-red-500 tracking-wide">Formula Forecast</span>
       </div>
       <div className="flex gap-2 ml-auto">
@@ -39,6 +44,6 @@ type HeaderProps = {
       </div>
     </header>
   );
-}
+};
 
 export default Header;

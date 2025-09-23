@@ -4,39 +4,40 @@
  * Example: "Australia" => "🇦🇺"
  */
 const flagMap: Record<string, string> = {
-  AUSTRALIA: '🇦🇺',
-  BAHRAIN: '🇧🇭',
-  SAUDI_ARABIA: '🇸🇦',
-  EMILIA_ROMAGNA: '🇮🇹',
-  MONACO: '🇲🇨',
-  SPAIN: '🇪🇸',
-  CANADA: '🇨🇦',
-  AUSTRIA: '🇦🇹',
-  GREAT_BRITAIN: '🇬🇧',
-  HUNGARY: '🇭🇺',
-  BELGIUM: '🇧🇪',
-  NETHERLANDS: '🇳🇱',
-  ITALY: '🇮🇹',
-  SINGAPORE: '🇸🇬',
-  JAPAN: '🇯🇵',
-  QATAR: '🇶🇦',
-  UNITED_STATES: '🇺🇸',
-  MEXICO: '🇲🇽',
-  BRAZIL: '🇧🇷',
-  ABU_DHABI: '🇦🇪',
-  CHINA: '🇨🇳',
-  AZERBAIJAN: '🇦🇿',
-  LAS_VEGAS: '🇺🇸',
-  MIAMI: '🇺🇸',
+  AUSTRALIA: "🇦🇺",
+  BAHRAIN: "🇧🇭",
+  SAUDI_ARABIA: "🇸🇦",
+  EMILIA_ROMAGNA: "🇮🇹",
+  MONACO: "🇲🇨",
+  SPAIN: "🇪🇸",
+  CANADA: "🇨🇦",
+  AUSTRIA: "🇦🇹",
+  GREAT_BRITAIN: "🇬🇧",
+  HUNGARY: "🇭🇺",
+  BELGIUM: "🇧🇪",
+  NETHERLANDS: "🇳🇱",
+  ITALY: "🇮🇹",
+  SINGAPORE: "🇸🇬",
+  JAPAN: "🇯🇵",
+  QATAR: "🇶🇦",
+  UNITED_STATES: "🇺🇸",
+  MEXICO: "🇲🇽",
+  BRAZIL: "🇧🇷",
+  ABU_DHABI: "🇦🇪",
+  CHINA: "🇨🇳",
+  AZERBAIJAN: "🇦🇿",
+  LAS_VEGAS: "🇺🇸",
+  MIAMI: "🇺🇸",
 };
 
 export function getFlagIcon(enumLocation: string): string {
-  if (!enumLocation) return '';
+  if (!enumLocation) return "";
   // Try exact match, then case-insensitive
-  return flagMap[enumLocation] ||
+  return (
+    flagMap[enumLocation] ||
     flagMap[
-      Object.keys(flagMap).find(
-        key => key.toLowerCase() === enumLocation.toLowerCase()
-      ) || ''
-    ] || '';
+      Object.keys(flagMap).find((key) => key.toLowerCase() === enumLocation.toLowerCase()) || ""
+    ] ||
+    ""
+  );
 }

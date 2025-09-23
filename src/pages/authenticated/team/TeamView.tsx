@@ -1,6 +1,6 @@
 // src/app/home/account/page.tsx
-import CurrentRaceView from './CurrentRaceView';
-import UpcomingRaceView from './UpcomingRaceView';
+import CurrentRaceView from "./CurrentRaceView";
+import UpcomingRaceView from "./UpcomingRaceView";
 
 export default function TeamView() {
   return (

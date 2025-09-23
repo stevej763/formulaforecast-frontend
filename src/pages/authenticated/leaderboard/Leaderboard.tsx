@@ -1,8 +1,9 @@
-
 const Leaderboard = () => {
   return (
     <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-8 flex flex-col items-center">
-      <h1 className="text-2xl font-bold text-gray-200 mb-4 text-center tracking-wide">Leaderboard</h1>
+      <h1 className="text-2xl font-bold text-gray-200 mb-4 text-center tracking-wide">
+        Leaderboard
+      </h1>
       <div className="flex gap-4 mb-4">
         <button className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-full shadow transition-colors duration-150">
           Create Championship
@@ -61,6 +62,6 @@ const Leaderboard = () => {
       </table>
     </div>
   );
-}
+};
 
 export default Leaderboard;

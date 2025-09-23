@@ -1,32 +1,33 @@
-import { useState, useEffect } from 'react';
-import Header from './nav/Header';
-import BottomNav from './nav/BottomNav';
-import TeamView from './team/TeamView';
-import RaceCalendar from './racecalendar/RaceCalendar';
-import Leaderboard from './leaderboard/Leaderboard';
-import Account from './Account';
+import { useState, useEffect } from "react";
+import Header from "./nav/Header";
+import BottomNav from "./nav/BottomNav";
+import TeamView from "./team/TeamView";
+import RaceCalendar from "./racecalendar/RaceCalendar";
+import Leaderboard from "./leaderboard/Leaderboard";
+import Account from "./Account";
 
 const HomePage = () => {
-  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('activeTab') || 'team');
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("activeTab") || "team");
   const [showAccount, setShowAccount] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('activeTab', activeTab);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("activeTab", activeTab);
     }
   }, [activeTab]);
-  
+
   const renderSelectedTabContent = (tab: string) => {
     switch (tab) {
-      case 'team':
+      case "team":
         return <TeamView />;
-      case 'leaderboard':
+      case "leaderboard":
         return <Leaderboard />;
-      case 'calendar':
+      case "calendar":
         return <RaceCalendar />;
-      default: <TeamView />;
+      default:
+        <TeamView />;
     }
-  } 
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-black to-red-900 px-4">
@@ -51,6 +52,6 @@ const HomePage = () => {
       )}
     </div>
   );
-}
+};
 
 export default HomePage;

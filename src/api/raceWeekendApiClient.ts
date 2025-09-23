@@ -1,27 +1,25 @@
-
-
 export type PracticeSessionResponse = {
-    "practiceSessionUid": string;
-    "sessionNumber": number,
-    "sessionDate": string, // ISO date string
+  practiceSessionUid: string;
+  sessionNumber: number;
+  sessionDate: string; // ISO date string
 };
 
 export type QualifyingResponse = {
-    "qualifyingSessionUid": string;
-    "sessionDate": string; // ISO date string
+  qualifyingSessionUid: string;
+  sessionDate: string; // ISO date string
 };
 
 export type SprintResponse = {
-    "sprintSessionUid": string;
-    "sessionDate": string; // ISO date string
+  sprintSessionUid: string;
+  sessionDate: string; // ISO date string
 };
 
 export type RaceResponse = {
-    "raceSessionUid": string;
-    "sessionDate": string; // ISO date string
+  raceSessionUid: string;
+  sessionDate: string; // ISO date string
 };
 
-export type RaceWeekendStatus = 'UPCOMING' | 'RACE_WEEK' | 'LIVE' | 'COMPLETE';
+export type RaceWeekendStatus = "UPCOMING" | "RACE_WEEK" | "LIVE" | "COMPLETE";
 
 export type RaceWeekend = {
   raceWeekendUid: string;
@@ -41,32 +39,27 @@ export type RaceWeekend = {
 
 export type NextRaceWeekendResponse = {
   nextRaceWeekendResponse?: RaceWeekend;
-}
+};
 
 export type CurrentRaceWeekendResponse = {
   currentRaceWeekendResponse?: RaceWeekend;
-}
+};
 
 export type RaceWeekends = {
-    raceWeekendResponses: RaceWeekend[];
-}
+  raceWeekendResponses: RaceWeekend[];
+};
 
-
-
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 export async function fetchAllRaceWeekends(): Promise<RaceWeekends> {
   try {
-    const response = await axiosInstance.get('/api/v1/race-weekend/all');
+    const response = await axiosInstance.get("/api/v1/race-weekend/all");
     return response.data;
   } catch (error: any) {
     console.log(error);
-    throw new Error('Failed to fetch race calendar');
+    throw new Error("Failed to fetch race calendar");
   }
 }
-
-
-
 
 export async function fetchRaceWeekendByUid(raceWeekendUid: string): Promise<RaceWeekend> {
   try {
@@ -74,33 +67,26 @@ export async function fetchRaceWeekendByUid(raceWeekendUid: string): Promise<Rac
     return response.data;
   } catch (error: any) {
     console.log(error);
-    throw new Error('Failed to fetch race');
+    throw new Error("Failed to fetch race");
   }
 }
-
-
-
-
 
 export async function fetchCurrentRaceWeekend(): Promise<CurrentRaceWeekendResponse> {
   try {
-    const response = await axiosInstance.get('/api/v1/race-weekend/current');
+    const response = await axiosInstance.get("/api/v1/race-weekend/current");
     return response.data;
   } catch (error: any) {
     console.log(error);
-    throw new Error('Failed to fetch race calendar');
+    throw new Error("Failed to fetch race calendar");
   }
 }
 
-
-
-
 export async function fetchUpcomingRaceWeekend(): Promise<NextRaceWeekendResponse> {
   try {
-    const response = await axiosInstance.get('/api/v1/race-weekend/next');
+    const response = await axiosInstance.get("/api/v1/race-weekend/next");
     return response.data;
   } catch (error: any) {
     console.log(error);
-    throw new Error('Failed to fetch race calendar');
+    throw new Error("Failed to fetch race calendar");
   }
 }

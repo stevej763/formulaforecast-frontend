@@ -1,34 +1,38 @@
 // src/app/home/racecalendar/RaceStatusDetail.tsx
 
-import { ClockIcon, FlagIcon, BoltIcon, CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
-
+import {
+  ClockIcon,
+  FlagIcon,
+  BoltIcon,
+  CheckCircleIcon,
+  QuestionMarkCircleIcon,
+} from "@heroicons/react/24/solid";
 
 interface RaceStatusDetailProps {
   status: string;
 }
 
-
 export default function RaceStatusDetail({ status }: RaceStatusDetailProps) {
   switch (status) {
-    case 'UPCOMING':
+    case "UPCOMING":
       return (
         <span className="text-blue-400 ml-2 flex items-center gap-1">
           <ClockIcon className="h-4 w-4" /> Upcoming
         </span>
       );
-    case 'RACE_WEEK':
+    case "RACE_WEEK":
       return (
         <span className="text-yellow-400 ml-2 flex items-center gap-1">
           <FlagIcon className="h-4 w-4" /> Race Week
         </span>
       );
-    case 'LIVE':
+    case "LIVE":
       return (
         <span className="text-green-400 ml-2 flex items-center gap-1">
           <BoltIcon className="h-4 w-4" /> Live
         </span>
       );
-    case 'COMPLETE':
+    case "COMPLETE":
       return (
         <span className="text-green-400 ml-2 flex items-center gap-1">
           <CheckCircleIcon className="h-4 w-4" /> Complete

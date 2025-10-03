@@ -2,22 +2,25 @@
 "use client";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../api/authenticationApiClient";
-
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../../features/auth/userSlice";
 type HeaderProps = {
   onAccountClick: () => void;
 };
 
 const Header = ({ onAccountClick }: HeaderProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignOut = () => {
     logout().then(() => {
+      dispatch(clearUser());
       navigate("/");
     });
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 bg-black/90 border-b border-gray-800 flex items-center justify-between h-14 shadow px-4">
+    <header className="w-full fixed top-0 left-0 z-50 bg-black/90 border-b border-gray-800 flex items-center justify-between h-16 shadow px-4">
       <div className="flex items-center gap-2">
         <img
           src="/logo-01-no-background.png"

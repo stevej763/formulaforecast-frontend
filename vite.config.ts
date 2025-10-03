@@ -10,5 +10,12 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     allowedHosts: ["steve-think", "localhost"],
+    proxy: {
+      '/api': {
+        target: 'https://3.8.137.201:443',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });

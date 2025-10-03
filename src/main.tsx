@@ -1,4 +1,3 @@
-import React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
@@ -8,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/authenticated/HomePage";
 import RequireAuth from "./RequireAuth";
 import "./index.css";
-import PredictionPage from "./pages/authenticated/PreditionPage";
 import LandingPage from "./pages/unauthenticated/LandingPage";
 
 createRoot(document.getElementById("root")!).render(
@@ -22,14 +20,6 @@ createRoot(document.getElementById("root")!).render(
             element={
               <RequireAuth>
                 <HomePage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/predition"
-            element={
-              <RequireAuth>
-                <PredictionPage />
               </RequireAuth>
             }
           />

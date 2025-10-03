@@ -4,7 +4,7 @@ import BottomNav from "./nav/BottomNav";
 import TeamView from "./team/TeamView";
 import RaceCalendar from "./racecalendar/RaceCalendar";
 import Leaderboard from "./leaderboard/Leaderboard";
-import Account from "./Account";
+import Account from "./account/Account";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem("activeTab") || "team");
@@ -30,9 +30,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-black to-red-900 px-4">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-black to-red-900">
       <Header onAccountClick={() => setShowAccount(true)} />
-      <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-8 flex flex-col items-center mt-16 mb-16">
+      <div className="mt-16">
         {renderSelectedTabContent(activeTab)}
       </div>
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />

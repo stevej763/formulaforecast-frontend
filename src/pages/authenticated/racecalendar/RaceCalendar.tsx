@@ -1,8 +1,8 @@
 // src/app/home/racecalendar/RaceCalendar.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import RaceDetail from "./RaceDetail";
 import { fetchAllRaceWeekends, type RaceWeekend } from "../../../api/raceWeekendApiClient";
-import LoaderSpinner from "../../../shared/LoaderSpinner";
+import LoaderSpinner from "../../../shared/components/LoaderSpinner";
 
 const RaceCalendar = () => {
   const [raceWeekends, setRaceWeekends] = useState<Array<RaceWeekend>>();

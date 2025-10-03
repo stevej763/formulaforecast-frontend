@@ -1,7 +1,7 @@
 import type { RaceWeekend } from "../../../api/raceWeekendApiClient";
-import { formatEnumText } from "../../../shared/formatEnumText";
-import { formatRaceDates } from "../../../shared/formatRaceDates";
-import { getFlagIcon } from "../../../shared/getFlagIcon";
+import { formatEnumText } from "../../../shared/utilities/formatEnumText";
+import { formatRaceDates } from "../../../shared/utilities/formatRaceDates";
+import { getFlagIcon } from "../../../shared/utilities/getFlagIcon";
 import RaceStatusDetail from "./RaceStatusDetail";
 
 interface RaceDetailProps {

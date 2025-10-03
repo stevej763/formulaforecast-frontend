@@ -1,26 +1,40 @@
 // src/app/home/account/page.tsx
-import CurrentRaceView from "./CurrentRaceView";
-import UpcomingRaceView from "./UpcomingRaceView";
+import { useState } from "react";
+import MyTeamTab from "./tabs/MyTeamTab";
+import FfSubTabs from "../../../shared/components/FfSubTabs";
+import PredictionView from "./tabs/PreditionTab";
 
 export default function TeamView() {
+
+  const tabOptions = [
+    { key: "team", label: "My Team" },
+    { key: "predictions", label: "Predictions" },
+    { key: "stats", label: "Stats" },
+  ];
+
+  const [activeTab, setActiveTab] = useState(tabOptions[0].key);
+
+const renderActiveAccoundTab = () => {
+  switch (activeTab) {
+    case "team":
+      return <MyTeamTab />;
+    case "predictions":
+      return (
+        <PredictionView />
+      );
+    case "stats":
+      return <div>Stats Tab Content</div>;
+    default:
+      return <MyTeamTab />;
+  }
+};
+
   return (
-    <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-2 flex flex-col items-center">
-      <CurrentRaceView />
-      <div className="w-full max-w-xs flex flex-row items-stretch gap-2 my-4">
-        <div className="flex-1 bg-white/10 backdrop-blur-md rounded-xl shadow p-3 flex flex-col items-center justify-center">
-          <span className="text-xs font-semibold text-gray-300 mb-1 tracking-wide">Avg Points</span>
-          <span className="text-xl font-bold text-blue-400 drop-shadow">102</span>
-        </div>
-        <div className="flex-1 bg-white/10 backdrop-blur-md rounded-xl shadow p-3 flex flex-col items-center justify-center">
-          <span className="text-xs font-semibold text-gray-300 mb-1 tracking-wide">Race Week</span>
-          <span className="text-3xl font-bold text-green-400 drop-shadow">128</span>
-        </div>
-        <div className="flex-1 bg-white/10 backdrop-blur-md rounded-xl shadow p-3 flex flex-col items-center justify-center">
-          <span className="text-xs font-semibold text-gray-300 mb-1 tracking-wide">Max Points</span>
-          <span className="text-xl font-bold text-yellow-400 drop-shadow">156</span>
-        </div>
+      <div className="w-full">
+      <FfSubTabs tabOptions={tabOptions} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-8 flex flex-col items-center mt-4 mx-auto">
+          {renderActiveAccoundTab()}
       </div>
-      <UpcomingRaceView />
     </div>
-  );
+  )
 }

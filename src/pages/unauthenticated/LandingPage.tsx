@@ -7,18 +7,21 @@ import { createAccount, login } from "../../api/authenticationApiClient";
 import { getAccountDetails } from "../../api/accountDetailsApiClient";
 import type { AccountLoginResponse } from "../../api/authenticationApiClient";
 import { useNavigate } from "react-router-dom";
+
 const LandingPage = () => {
   const [formType, setFormType] = useState<"login" | "signup" | null>(null);
-  const [testValue, setTestValue] = useState<string | null>(null);
   const [accountCreated, setAccountCreated] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") !== null) {
-      navigate("/home");
-    }
-  }, [navigate]);
+      getAccountDetails().then((user) => {
+      if (user?.authenticated) {
+        dispatch(setUser({ user }));
+        navigate("/home");
+      }
+    });
+  }, [dispatch, navigate]);
 
   const handleLogin = async (email: string, password: string) => {
     try {

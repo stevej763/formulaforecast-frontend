@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   fetchCurrentRaceWeekend,
-  type CurrentRaceWeekendResponse,
+  type RaceWeekendResponse,
 } from "../../../api/raceWeekendApiClient";
-import { getFlagIcon } from "../../../shared/getFlagIcon";
-import { formatEnumText } from "../../../shared/formatEnumText";
-import { formatRaceDates } from "../../../shared/formatRaceDates";
+import { getFlagIcon } from "../../../shared/utilities/getFlagIcon";
+import { formatEnumText } from "../../../shared/utilities/formatEnumText";
+import { formatRaceDates } from "../../../shared/utilities/formatRaceDates";
 import RaceStatusDetail from "./RaceStatusDetail";
-import LoaderSpinner from "../../../shared/LoaderSpinner";
+import LoaderSpinner from "../../../shared/components/LoaderSpinner";
 
 export default function CurrentRaceView() {
-  const [currentRace, setCurrentRace] = useState<CurrentRaceWeekendResponse | null>(null);
+  const [currentRace, setCurrentRace] = useState<RaceWeekendResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +38,7 @@ export default function CurrentRaceView() {
     return <div className="p-4 text-center text-red-500">Error: {error}</div>;
   }
 
-  const race = currentRace?.currentRaceWeekendResponse;
+  const race = currentRace?.raceWeekendResponse;
 
   if (!race) {
     return;

@@ -4,8 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --mode dev",
+    "demo": "vite --mode demo",
+    "build:dev": "tsc -b && vite build --mode dev",
+    "build:prod": "tsc -b && vite build --mode production",
+    "build:demo": "tsc -b && vite build --mode demo",
     "lint": "eslint .",
     "lint-fix": "eslint --fix --ext .js,.jsx .",
     "preview": "vite preview"
@@ -17,7 +20,6 @@
     "autoprefixer": "^10.4.21",
     "axios": "^1.12.2",
     "dotenv": "^17.2.2",
-    "fs": "^0.0.1-security",
     "postcss": "^8.5.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

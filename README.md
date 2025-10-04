@@ -15,3 +15,6 @@ Docker containers:
 (provide the environment as a build arg, dev, demo or prod)
 
 `docker run -p 8080:80 formulaforecast-frontend`
+
+
+copy dist to html: 'sudo cp -r dist/* /var/www/html/'

@@ -1,115 +1,79 @@
+import { useEffect, useState } from "react";
+import { fetchPredictionTypes, submitFastestLapPrediction, type PredictionType } from "../../../../api/predictionsApiClient";
 import type { RaceWeekend } from "../../../../api/raceWeekendApiClient";
+import { useUserTeam } from "../../../../store/teamSlice";
+import { formatEnumText } from "../../../../shared/utilities/formatEnumText";
 
 interface PredictionsSelectionViewProps {
     race: RaceWeekend;
     onComplete: () => void;
 }
 
-
-import { useState } from "react";
-
-const formSteps = [
-    {
-        key: "qualifying",
-        title: "Qualifying Top 3",
-        fields: ["First Place", "Second Place", "Third Place"],
-        color: "bg-blue-700"
-    },
-    {
-        key: "race",
-        title: "Race Top 3",
-        fields: ["First Place", "Second Place", "Third Place"],
-        color: "bg-red-700"
-    },
-    {
-        key: "fastestLap",
-        title: "Fastest Lap",
-        fields: ["Driver"],
-        color: "bg-green-700"
-    }
-] as const;
-
-type StepKey = typeof formSteps[number]["key"];
-type FormData = {
-    [K in StepKey]: Record<string, string>;
-};
-
 const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionViewProps) => {
-        const [step, setStep] = useState(0);
-        const [formData, setFormData] = useState<FormData>({ qualifying: {}, race: {}, fastestLap: {} });
 
-        const currentStep = formSteps[step];
+    const team = useUserTeam();
+    const [predictionTypes, setPredictionTypes] = useState<Array<PredictionType>>([]);
 
-        const handleChange = (field: string, value: string) => {
-            setFormData(prev => ({
-                ...prev,
-                [currentStep.key]: {
-                    ...prev[currentStep.key],
-                    [field]: value
-                }
-            }));
+    useEffect(() => {
+        const fetchTypes = async () => {
+            try {
+                const predictionTypes = await fetchPredictionTypes();
+                setPredictionTypes(predictionTypes.predictionTypes);
+            } catch (error) {
+                console.error("Error fetching prediction types:", error);
+            }
         };
+        fetchTypes();
+    }, []);
 
-    const handleNext = () => {
-        if (step < formSteps.length - 1) {
-            setStep(step + 1);
-        } else {
-            onComplete();
-            // Optionally submit formData here
+    
+    const handleSubmit = async () => {
+        try {
+            await submitFastestLapPrediction({
+                raceWeekendUid: race.raceWeekendUid,
+                driverUid: "c84f66aa-4706-41a0-bad9-7278f56236a9",
+                userTeamUid: team.teamUid, 
+                predictionTypeUid: "a31c131f-6fb6-4328-913e-33d40142101a"
+            });
+            
+        } catch (error: any) {
+            console.error("Error submitting prediction:", error);
         }
     };
 
-    const handleBack = () => {
-        if (step > 0) setStep(step - 1);
-    };
-
     return (
-        <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md rounded-xl shadow-lg p-8 flex flex-col items-center border-2 border-red-700">
-            <h2 className="text-2xl font-bold text-white mb-2 text-center">Predictions for <span className="text-red-400">{race.raceName}</span></h2>
-            <div className={`w-full rounded-lg p-4 mb-6 ${currentStep.color} bg-opacity-80 shadow flex flex-col items-center`}>
-                <h3 className="text-xl font-semibold text-white mb-4">{currentStep.title}</h3>
-                <form className="w-full flex flex-col gap-4 items-center">
-                                {currentStep.fields.map(field => (
-                                    <div key={field} className="w-full max-w-md">
-                                        <label className="block text-white mb-2 text-lg" htmlFor={field}>{field}</label>
-                                        <input
-                                            id={field}
-                                            type="text"
-                                            value={formData[currentStep.key][field] || ""}
-                                            onChange={e => handleChange(field, e.target.value)}
-                                            className="w-full px-4 py-2 rounded bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-400"
-                                            required
-                                        />
-                                    </div>
-                                ))}
-                </form>
-            </div>
-                            <div className="w-full flex justify-between mt-4">
-                                <button
-                                    type="button"
-                                    onClick={step === 0 ? onComplete : handleBack}
-                                    className="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded transition"
-                                >
-                                    {step === 0 ? "Cancel" : "Back"}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    className={`bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition ml-auto`}
-                                >
-                                    {step < formSteps.length - 1 ? "Next" : "Submit Predictions"}
-                                </button>
-                            </div>
-            <div className="mt-6 flex gap-2">
-                {formSteps.map((s, idx) => (
-                    <span
-                        key={s.key}
-                        className={`w-3 h-3 rounded-full ${idx === step ? "bg-green-500" : "bg-gray-500"} inline-block`}
-                    ></span>
-                ))}
+        <div className="w-full max-w-2xl mx-auto p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center">Predictions for <span className="text-red-400">{race.raceName}</span></h2>
+            {predictionTypes.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {predictionTypes.map((type) => (
+                        <div 
+                            key={type.predictionTypeUid} 
+                            className="bg-white/20 rounded-lg p-4 border border-white/30 hover:border-red-400 transition-colors"
+                        >
+                            <h3 className="font-bold text-lg text-white mb-2">{formatEnumText(type.predictionType)}</h3>
+                            <p className="text-sm text-gray-200">{type.description}</p>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center text-gray-400 mb-6">Loading prediction types...</div>
+            )}
+            <div className="flex justify-end gap-4">
+                <button
+                    className="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded transition"
+                    onClick={onComplete}
+                >
+                    Cancel
+                </button>
+                <button
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition"
+                    onClick={handleSubmit}
+                >
+                    Submit Predictions
+                </button>
             </div>
         </div>
     );
 }
-
 export default PredictionsSelectionView;

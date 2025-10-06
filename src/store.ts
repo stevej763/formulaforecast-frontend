@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./features/auth/userSlice";
+import accountReducer from "./store/accountSlice";
+import userTeamReducer from "./store/teamSlice";
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    account: accountReducer,
+    userTeam: userTeamReducer,
   },
 });
 

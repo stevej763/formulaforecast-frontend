@@ -1,39 +1,45 @@
+import axiosInstance from "./axiosInstance";
 
+export interface FastestLapPrediction {
+    userTeamUid: string;
+    raceWeekendUid: string;
+    driverUid: string;
+    predictionTypeUid: string;
+}
 
-export const submitPredictions = async (raceId: string, predictions: any) => {
+export interface PredictionType {
+    predictionTypeUid: string;
+    predictionType: string;
+    description: string;
+}   
+
+export type PredictionTypes = {
+    predictionTypes: Array<PredictionType>
+}
+
+export const submitFastestLapPrediction = async (fastestLapPrediction: FastestLapPrediction) => {
     try {
-        const response = await fetch(`/api/races/${raceId}/predictions`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(predictions),
-        });
-        if (!response.ok) {
-            throw new Error("Failed to submit predictions");
-        }
-        return await response.json();
+        const response = await axiosInstance.post(`/api/v1/predictions/make-prediction/fastest-lap`, 
+            fastestLapPrediction,
+            {
+                headers: { 
+                    "Content-Type": "application/json" 
+                } 
+            }
+        );
+        return response.data;
     } catch (error) {
-        console.error("Error submitting predictions:", error);
+        console.error("Error submitting fastest lap prediction:", error);
         throw error;
     }
 };
 
-
-export const fetchPredictions = async (raceId: string) => {
+export const fetchPredictionTypes = async () : Promise<PredictionTypes> => {
     try {
-        const response = await fetch(`/api/races/${raceId}/predictions`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        if (!response.ok) {
-            throw new Error("Failed to fetch predictions");
-        }
-        return await response.json();
+        const response = await axiosInstance.get(`/api/v1/predictions/types`);
+        return response.data;
     } catch (error) {
-        console.error("Error fetching predictions:", error);
+        console.error("Error fetching prediction types:", error);
         throw error;
     }
 };

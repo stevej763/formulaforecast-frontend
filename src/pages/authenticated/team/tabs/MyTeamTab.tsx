@@ -2,17 +2,22 @@ import { getUserTeam, type UserTeam } from "../../../../api/userTeamApiClient";
 import { useEffect, useState } from "react";
 import LoaderSpinner from "../../../../shared/components/LoaderSpinner";
 import TeamCreationView from "../TeamCreationView";
+import { useDispatch } from "react-redux";
+import { setUserTeam } from "../../../../store/teamSlice";
 
 const MyTeamTab = () => {
 
-    const [team, setTeam] = useState<UserTeam | null>(null);
+  const [team, setTeam] = useState<UserTeam | null>(null);
   const [loading, setLoading] = useState(true);
   const [creatingTeam, setCreatingTeam] = useState(false)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getUserTeam()
       .then((teamResponse) => {
         setTeam(teamResponse.teamDetailsDto);
+        dispatch(setUserTeam({ userTeam: { teamUid: teamResponse.teamDetailsDto.teamUid } }));
+
         setLoading(false);
       })
       .catch(() => {

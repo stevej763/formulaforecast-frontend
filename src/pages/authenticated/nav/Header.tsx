@@ -3,7 +3,7 @@
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../api/authenticationApiClient";
 import { useDispatch } from "react-redux";
-import { clearUser } from "../../../features/auth/userSlice";
+import { clearAccount } from "../../../store/accountSlice";
 type HeaderProps = {
   onAccountClick: () => void;
 };
@@ -11,10 +11,12 @@ type HeaderProps = {
 const Header = ({ onAccountClick }: HeaderProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const environment = import.meta.env.MODE;
+  const showEnvironment = environment !== 'production';
 
   const handleSignOut = () => {
     logout().then(() => {
-      dispatch(clearUser());
+      dispatch(clearAccount());
       navigate("/");
     });
   };
@@ -30,6 +32,11 @@ const Header = ({ onAccountClick }: HeaderProps) => {
           className="h-8 w-8 object-contain"
         />
         <span className="text-xl font-bold text-red-500 tracking-wide">Formula Forecast</span>
+        {showEnvironment && (
+          <span className="text-xs font-semibold bg-yellow-600 text-black px-2 py-1 rounded uppercase">
+            {environment}
+          </span>
+        )}
       </div>
       <div className="flex gap-2 ml-auto">
         <button

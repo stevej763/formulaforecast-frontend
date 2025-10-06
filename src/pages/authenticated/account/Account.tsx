@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../../features/auth/userSlice";
+import { useAccount } from "../../../store/accountSlice";
 
 const Account = () => {
-  const user = useUser();
+  const account = useAccount();
   const navigate = useNavigate();
 
-  if (!user) {
+  if (!account) {
     navigate("/");
   }
 
@@ -16,16 +16,16 @@ const Account = () => {
       </h2>
       <div className="flex flex-col gap-6 text-lg text-gray-100">
         <div>
-          <span className="font-semibold text-red-400">First Name:</span> {user.firstName}
+          <span className="font-semibold text-red-400">First Name:</span> {account.firstName}
         </div>
         <div>
-          <span className="font-semibold text-red-400">Last Name:</span> {user.lastName}
+          <span className="font-semibold text-red-400">Last Name:</span> {account.lastName}
         </div>
         <div>
-          <span className="font-semibold text-red-400">Email:</span> {user.email}
+          <span className="font-semibold text-red-400">Email:</span> {account.email}
         </div>
         <div>
-          <span className="font-semibold text-red-400">Account UID:</span> {user.accountUid}
+          <span className="font-semibold text-red-400">Account UID:</span> {account.accountUid}
         </div>
       </div>
     </div>

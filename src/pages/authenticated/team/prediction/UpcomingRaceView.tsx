@@ -71,41 +71,42 @@ export default function UpcomingRaceDetailView() {
     return <div className="p-4 text-center text-gray-400">No upcoming race</div>;
   }
 
-  
-
   return (
-    <li className="py-3 flex flex-col">
-      <div className="flex flex-col items-start w-full">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-lg font-semibold text-gray-200">
+    <div className="w-full max-w-2xl mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-xl p-6 border-2 border-red-700">
+      {/* Race Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <span className="text-4xl">
             {getFlagIcon(race.raceName)}
           </span>
-          <span className="text-lg font-semibold text-gray-200">
-            {formatEnumText(race.raceName)}
-          </span>
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              {formatEnumText(race.raceName)}
+            </h2>
+            <p className="text-sm text-gray-400">
+              {formatRaceDates(race.raceWeekendStartDate, race.raceWeekendEndDate)}
+            </p>
+          </div>
         </div>
+        <RaceStatusDetail status={race.raceWeekendStatus} />
       </div>
-      <div className="flex flex-row w-full justify-between items-center mt-2">
-        <span className="text-xs text-gray-400">
-          {formatRaceDates(race.raceWeekendStartDate, race.raceWeekendEndDate)}
-        </span>
-        <span>
-          <RaceStatusDetail status={race.raceWeekendStatus} />
-        </span>
-      </div>
-      <div className="mt-4">
+
+      {/* Countdown Section */}
+      <div className="mb-6">
         <CountdownToRace raceWeekendStartDate={race.raceWeekendStartDate} />
       </div>
+
+      {/* Action Button */}
       {race.raceWeekendStatus === "RACE_WEEK" && (
-        <div className="flex w-full justify-end">
+        <div className="flex justify-end">
           <button
-            className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-full shadow transition-colors duration-150"
+            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-150 transform hover:scale-105"
             onClick={() => setMakingPredictions(true)}
           >
             Make Predictions
           </button>
         </div>
       )}
-    </li>
+    </div>
   );
 }

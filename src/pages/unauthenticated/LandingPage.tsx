@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../features/auth/userSlice";
+import { setAccount } from "../../store/accountSlice";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { createAccount, login } from "../../api/authenticationApiClient";
@@ -15,9 +15,9 @@ const LandingPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      getAccountDetails().then((user) => {
-      if (user?.authenticated) {
-        dispatch(setUser({ user }));
+      getAccountDetails().then((account) => {
+      if (account?.authenticated) {
+        dispatch(setAccount({ account }));
         navigate("/home");
       }
     });
@@ -27,11 +27,11 @@ const LandingPage = () => {
     try {
       const response: AccountLoginResponse = await login({ email, password });
       console.log("Login successful:", response.ok);
-      const userDetails = await getAccountDetails();
-      dispatch(setUser({ user: userDetails }));
+      const accountDetails = await getAccountDetails();
+      dispatch(setAccount({ account: accountDetails }));
       navigate("/home");
     } catch (error) {
-      console.error("Login or fetching user details failed:", error);
+      console.error("Login or fetching account details failed:", error);
     }
   };
 

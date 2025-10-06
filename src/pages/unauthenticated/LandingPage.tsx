@@ -9,6 +9,7 @@ import type { AccountLoginResponse } from "../../api/authenticationApiClient";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const environment = import.meta.env.VITE_APP_ENV;
   const [formType, setFormType] = useState<"login" | "signup" | null>(null);
   const [accountCreated, setAccountCreated] = useState(false);
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="mt-8 text-gray-300 text-center text-xs opacity-80">
-        &copy; {new Date().getFullYear()} Formula Forecast. All rights reserved.
+        &copy; {new Date().getFullYear()} Formula Forecast. All rights reserved. {environment}
       </div>
     </div>
   );

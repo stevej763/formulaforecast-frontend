@@ -48,7 +48,7 @@ const RaceCalendar = () => {
   }
 
   return (
-    <div className="w-full max-w-lg mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg p-6 mt-4">
+    <div className="w-full max-w-lg mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg p-4 sm:p-6 mt-4">
       <h2 className="text-3xl font-extrabold mb-6 text-center text-white drop-shadow">
         Race Calendar
       </h2>

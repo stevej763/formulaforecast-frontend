@@ -48,11 +48,13 @@ const RaceCalendar = () => {
   }
 
   return (
-    <div className="w-full max-w-lg mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg p-4 sm:p-6 mt-4">
-      <h2 className="text-3xl font-extrabold mb-6 text-center text-white drop-shadow">
+    <div className="w-full max-w-lg mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg p-4 sm:p-6 my-4 mb-16">
+      <h2 className="text-2xl sm:text-3xl font-extrabold mb-4 sm:mb-6 text-center text-white drop-shadow">
         Race Calendar
       </h2>
-      <div className="text-base text-gray-100">{renderRaceWeekendList()}</div>
+      <div className="text-sm sm:text-base text-gray-100 max-h-[calc(100vh-16rem)] overflow-y-auto ff-scrollbar">
+        {renderRaceWeekendList()}
+      </div>
     </div>
   );
 };

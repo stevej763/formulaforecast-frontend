@@ -11,7 +11,7 @@ type HeaderProps = {
 const Header = ({ onAccountClick }: HeaderProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const environment = import.meta.env.MODE;
+  const environment = import.meta.env.VITE_APP_ENV;
   const showEnvironment = environment !== 'production';
 
   const handleSignOut = () => {

@@ -16,7 +16,8 @@ const MyTeamTab = () => {
     getUserTeam()
       .then((teamResponse) => {
         setTeam(teamResponse.teamDetailsDto);
-        dispatch(setUserTeam({ userTeam: { teamUid: teamResponse.teamDetailsDto.teamUid } }));
+        const userTeam = teamResponse.teamDetailsDto;
+        dispatch(setUserTeam(userTeam));
 
         setLoading(false);
       })

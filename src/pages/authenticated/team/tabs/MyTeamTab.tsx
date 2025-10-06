@@ -17,7 +17,7 @@ const MyTeamTab = () => {
       .then((teamResponse) => {
         setTeam(teamResponse.teamDetailsDto);
         const userTeam = teamResponse.teamDetailsDto;
-        dispatch(setUserTeam(userTeam));
+        dispatch(setUserTeam({userTeam: userTeam}));
 
         setLoading(false);
       })

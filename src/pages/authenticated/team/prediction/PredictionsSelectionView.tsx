@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchPredictionTypes, submitFastestLapPrediction, type PredictionType } from "../../../../api/predictionsApiClient";
 import type { RaceWeekend } from "../../../../api/raceWeekendApiClient";
 import { useUserTeam } from "../../../../store/teamSlice";
-import { formatEnumText } from "../../../../shared/utilities/formatEnumText";
+import PredictionTypeCard from "./PredictionTypeCard";
 
 interface PredictionsSelectionViewProps {
     race: RaceWeekend;
@@ -47,13 +47,7 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
             {predictionTypes.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     {predictionTypes.map((type) => (
-                        <div 
-                            key={type.predictionTypeUid} 
-                            className="bg-white/20 rounded-lg p-4 border border-white/30 hover:border-red-400 transition-colors"
-                        >
-                            <h3 className="font-bold text-lg text-white mb-2">{formatEnumText(type.predictionType)}</h3>
-                            <p className="text-sm text-gray-200">{type.description}</p>
-                        </div>
+                        <PredictionTypeCard key={type.predictionTypeUid} predictionType={type} />
                     ))}
                 </div>
             ) : (

@@ -32,7 +32,7 @@ const renderActiveAccoundTab = () => {
   return (
       <div className="w-full">
       <FfSubTabs tabOptions={tabOptions} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-8 flex flex-col items-center mt-4 mx-auto">
+      <div className="w-full bg-white/5 rounded-xl shadow-lg p-4 sm:p-6 flex flex-col items-center mt-4">
           {renderActiveAccoundTab()}
       </div>
     </div>

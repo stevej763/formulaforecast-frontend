@@ -19,7 +19,7 @@ export type PredictionTypes = {
 
 export const submitFastestLapPrediction = async (fastestLapPrediction: FastestLapPrediction) => {
     try {
-        const response = await axiosInstance.post(`/api/v1/predictions/make-prediction/fastest-lap`, 
+        const response = await axiosInstance.post(`/api/v1/predictions/make-prediction`, 
             fastestLapPrediction,
             {
                 headers: { 

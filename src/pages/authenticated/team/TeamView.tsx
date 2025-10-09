@@ -3,6 +3,7 @@ import { useState } from "react";
 import MyTeamTab from "./tabs/MyTeamTab";
 import FfSubTabs from "../../../shared/components/FfSubTabs";
 import PredictionView from "./tabs/PreditionTab";
+import type { TabOption } from "../../../shared/components/FfSubTabs";
 
 export default function TeamView() {
 

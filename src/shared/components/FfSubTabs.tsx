@@ -1,16 +1,17 @@
+import type { TeamViewTab } from "../../pages/authenticated/team/TeamView";
 
-interface TabOption {
-  key: string;
+export interface TabOption {
+  key: TeamViewTab;
   label: string;
 }
 
-interface LeaderboardTabsProps {
+interface FfSubTabsProps {
   tabOptions: TabOption[];
-  activeTab: string;
-  setActiveTab: (key: string) => void;
+  activeTab: TeamViewTab;
+  setActiveTab: (key: TeamViewTab) => void;
 }
 
-const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: LeaderboardTabsProps) => {
+const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: FfSubTabsProps) => {
   return (
     <div className="w-full bg-gray-900 border-b border-gray-700">
       <div className="flex w-full">

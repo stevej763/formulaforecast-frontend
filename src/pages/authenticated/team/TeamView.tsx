@@ -3,25 +3,26 @@ import { useState } from "react";
 import MyTeamTab from "./tabs/MyTeamTab";
 import FfSubTabs from "../../../shared/components/FfSubTabs";
 import PredictionView from "./tabs/PreditionTab";
+import type { TabOption } from "../../../shared/components/FfSubTabs";
+
+export type TeamViewTab = "team" | "predictions" | "stats";
 
 export default function TeamView() {
 
-  const tabOptions = [
+  const tabOptions: TabOption[] = [
     { key: "team", label: "My Team" },
     { key: "predictions", label: "Predictions" },
     { key: "stats", label: "Stats" },
   ];
 
-  const [activeTab, setActiveTab] = useState(tabOptions[0].key);
+  const [activeTab, setActiveTab] = useState<TabOption>(tabOptions[0]);
 
-const renderActiveAccoundTab = () => {
+const renderActiveAccountTab = () => {
   switch (activeTab) {
     case "team":
       return <MyTeamTab />;
     case "predictions":
-      return (
-        <PredictionView />
-      );
+      return <PredictionView />;
     case "stats":
       return <div>Stats Tab Content</div>;
     default:
@@ -30,10 +31,10 @@ const renderActiveAccoundTab = () => {
 };
 
   return (
-      <div className="w-full">
+      <div className="w-full h-full flex flex-col">
       <FfSubTabs tabOptions={tabOptions} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="w-full bg-white/5 rounded-xl shadow-lg p-4 sm:p-6 flex flex-col items-center mt-4">
-          {renderActiveAccoundTab()}
+      <div className="flex-1 overflow-hidden">
+          {renderActiveAccountTab()}
       </div>
     </div>
   )

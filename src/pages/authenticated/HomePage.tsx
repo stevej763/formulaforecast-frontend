@@ -32,7 +32,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-black to-red-900">
       <Header onAccountClick={() => setShowAccount(true)} />
-      <div className="mt-16">
+      <div className="mt-16 mb-16 flex-1 overflow-hidden">
         {renderSelectedTabContent(activeTab)}
       </div>
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />

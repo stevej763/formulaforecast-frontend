@@ -1,16 +1,16 @@
 
-interface TabOption {
+export interface TabOption {
   key: string;
   label: string;
 }
 
-interface LeaderboardTabsProps {
+interface FfSubTabsProps {
   tabOptions: TabOption[];
   activeTab: string;
   setActiveTab: (key: string) => void;
 }
 
-const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: LeaderboardTabsProps) => {
+const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: FfSubTabsProps) => {
   return (
     <div className="w-full bg-gray-900 border-b border-gray-700">
       <div className="flex w-full">

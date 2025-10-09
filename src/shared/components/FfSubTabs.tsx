@@ -1,14 +1,13 @@
-import type { TeamViewTab } from "../../pages/authenticated/team/TeamView";
 
 export interface TabOption {
-  key: TeamViewTab;
+  key: string;
   label: string;
 }
 
 interface FfSubTabsProps {
   tabOptions: TabOption[];
-  activeTab: TeamViewTab;
-  setActiveTab: (key: TeamViewTab) => void;
+  activeTab: string;
+  setActiveTab: (key: string) => void;
 }
 
 const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: FfSubTabsProps) => {

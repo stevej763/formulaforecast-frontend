@@ -115,7 +115,6 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
                 predictionType={selectedPredictionType}
                 selectedDrivers={currentSelection}
                 onSelectDrivers={handleSelectDrivers}
-                onBack={handlePredictionSelected}
                 onSave={handlePredictionSelected}
                 drivers={drivers}
                 requiresTopThree={requiresTopThree}

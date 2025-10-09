@@ -2,10 +2,10 @@ import {useState } from "react";
 import GlobalLeaderboardTab from "./tabs/GlobalChampionshipLeaderboardView";
 import UserChampionshipsView from "./tabs/UserChampionshipsLeadboardView";
 import CreateChampionshipsView from "./tabs/CreateChampionshipsView";
-import FfSubTabs from "../../../shared/components/FfSubTabs";
+import FfSubTabs, { type TabOption } from "../../../shared/components/FfSubTabs";
 const Leaderboard = () => {
 
-  const tabOptions = [
+  const tabOptions: TabOption[] = [
     { key: "global", label: "Global Championship" },
     { key: "user", label: "My Championships" },
     { key: "create", label: "Create Championship" },

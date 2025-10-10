@@ -1,9 +1,9 @@
 import axiosInstance from "./axiosInstance";
 
-export interface FastestLapPrediction {
+export interface DriverPrediction {
     userTeamUid: string;
     raceWeekendUid: string;
-    driverUid: string;
+    driverPredictions: Array<DriverPredictionDetail>;
     predictionTypeUid: string;
 }
 
@@ -17,7 +17,27 @@ export type PredictionTypes = {
     predictionTypes: Array<PredictionType>
 }
 
-export const submitFastestLapPrediction = async (fastestLapPrediction: FastestLapPrediction) => {
+export interface DriverPredictionDetail {
+    driverUid: string;
+    rank: number;
+}
+
+export interface ExistingPrediction {
+    predictionTypeUid: string;
+    userTeamUid: string;
+    raceWeekendUid: string;
+    rankedDriverPredictions: DriverPredictionDetail[];
+}
+
+export interface ExistingPredictionsMap {
+    [predictionTypeUid: string]: ExistingPrediction;
+}
+
+export interface ExistingPredictionResponse {
+    predictions: ExistingPredictionsMap;
+}
+
+export const submitPrediction = async (fastestLapPrediction: DriverPrediction) => {
     try {
         const response = await axiosInstance.post(`/api/v1/predictions/make-prediction`, 
             fastestLapPrediction,
@@ -40,6 +60,17 @@ export const fetchPredictionTypes = async () : Promise<PredictionTypes> => {
         return response.data;
     } catch (error) {
         console.error("Error fetching prediction types:", error);
+        throw error;
+    }
+};
+
+export const fetchExistingPredictionForRaceWeekend = async (userTeamUid: string, raceWeekendUid: string): Promise<ExistingPredictionResponse> => {
+    try {
+        const response = await axiosInstance.get(`/api/v1/predictions/${userTeamUid}/${raceWeekendUid}`);
+        console.log("Fetched existing predictions:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching existing predictions:", error);
         throw error;
     }
 };

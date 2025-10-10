@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPredictionTypes, submitFastestLapPrediction as submitPrediction, type PredictionType } from "../../../../api/predictionsApiClient";
+import { fetchPredictionTypes, submitPrediction, fetchExistingPredictionForRaceWeekend, type DriverPrediction, type PredictionType, type DriverPredictionDetail, type ExistingPrediction } from "../../../../api/predictionsApiClient";
 import { fetchAllDrivers, type Driver } from "../../../../api/driversApiClient";
 import type { RaceWeekend } from "../../../../api/raceWeekendApiClient";
 import { useUserTeam } from "../../../../store/teamSlice";
@@ -13,8 +13,13 @@ interface PredictionsSelectionViewProps {
     onComplete: () => void;
 }
 
+interface PredictionEntry {
+    driver: Driver;
+    rank: number;
+}
+
 interface PredictionsMap {
-    [predictionTypeUid: string]: Driver[];
+    [predictionTypeUid: string]: PredictionEntry[];
 }
 
 const TOP_THREE_TYPES = ['RACE_TOP_THREE', 'QUALIFYING_TOP_THREE'];
@@ -36,6 +41,36 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
                 ]);
                 setPredictionTypes(predictionTypesData.predictionTypes);
                 setDrivers(driversData.drivers);
+                
+                // Fetch existing predictions separately to handle potential 404 errors gracefully
+                try {
+                    const existingPredictions = await fetchExistingPredictionForRaceWeekend(team.teamUid, race.raceWeekendUid);
+                    
+                    // Process existing predictions and convert to PredictionEntry format
+                    if (existingPredictions && existingPredictions.predictions) {
+                        const existingPredictionsMap: PredictionsMap = {};
+                        
+                        // Iterate over the predictions object (map)
+                        Object.values(existingPredictions.predictions).forEach((prediction: ExistingPrediction) => {
+                            const predictionEntries: PredictionEntry[] = prediction.rankedDriverPredictions
+                                .map((dp: DriverPredictionDetail) => {
+                                    const driver = driversData.drivers.find((d: Driver) => d.driverUid === dp.driverUid);
+                                    return driver ? { driver, rank: dp.rank } : null;
+                                })
+                                .filter((entry): entry is PredictionEntry => entry !== null);
+                            
+                            existingPredictionsMap[prediction.predictionTypeUid] = predictionEntries;
+                        });
+                        
+                        setPredictions(existingPredictionsMap);
+                        console.log("Loaded existing predictions:", existingPredictionsMap);
+                    }
+                } catch {
+                    console.log("No existing predictions found for this race weekend - starting fresh");
+                    // This is expected for new race weekends, so we don't treat it as an error
+                }
+               
+                
                 console.log(predictionTypesData.predictionTypes);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -44,7 +79,7 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
             }
         };
         fetchData();
-    }, []);
+    }, [team.teamUid, race.raceWeekendUid]);
     
     // Determine if current prediction type requires top 3
     const requiresTopThree = (predictionType: string) => {
@@ -60,18 +95,26 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
     // Get completion count
     const getCompletionCount = () => {
         return predictionTypes.filter((type) => {
-            const driverList = predictions[type.predictionTypeUid] || [];
+            const entryList = predictions[type.predictionTypeUid] || [];
             const required = requiresTopThree(type.predictionType) ? 3 : 1;
-            return driverList.length === required;
+            return entryList.length === required;
         }).length;
     };
 
     const handleSelectDrivers = (selectedDrivers: Driver[]) => {
         if (!selectedPredictionType) return;
         
+        // Convert drivers to PredictionEntry objects with ranks
+        const predictionEntries: PredictionEntry[] = selectedDrivers.map((driver, index) => ({
+            driver,
+            rank: index + 1 // Rank is based on selection order (1-based)
+        }));
+        
+        console.log("Creating prediction entries:", predictionEntries);
+        
         setPredictions(prevPredictions => ({
             ...prevPredictions,
-            [selectedPredictionType.predictionTypeUid]: selectedDrivers
+            [selectedPredictionType.predictionTypeUid]: predictionEntries
         }));
     };
 
@@ -82,18 +125,32 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
             setSelectedPredictionType(null);
             return;
         }
-        if (!requiresTopThree(selectedPredictionType.predictionType)) {
-            submitPrediction({
-                userTeamUid: team.teamUid,
-                raceWeekendUid: race.raceWeekendUid,
-                driverUid: currentPrediction[0]?.driverUid,
-                predictionTypeUid: selectedPredictionType.predictionTypeUid
-            }).then(() => {
-                console.log("Current Prediction for", selectedPredictionType.predictionType, ":", currentPrediction);
-            }).catch((error) => {
-                console.error("Error submitting fastest lap prediction:", error);
-            });
+        if (requiresTopThree(selectedPredictionType.predictionType) && currentPrediction.length !== 3) {
+            alert("Please select exactly 3 drivers for this prediction.");
+            return;
         }
+        if (!requiresTopThree(selectedPredictionType.predictionType) && currentPrediction.length !== 1) {
+            alert("Please select exactly 1 driver for this prediction.");
+            return;
+        }
+        console.log("Submitting prediction for", selectedPredictionType.predictionType, ":", currentPrediction);
+        console.log("Driver predictions being sent:", currentPrediction.map(entry => ({ driverUid: entry.driver.driverUid, rank: entry.rank })));
+        const predictionRequest: DriverPrediction = {
+            userTeamUid: team.teamUid,
+            raceWeekendUid: race.raceWeekendUid,
+            driverPredictions: currentPrediction.map(entry => ({ driverUid: entry.driver.driverUid, rank: entry.rank })),
+            predictionTypeUid: selectedPredictionType.predictionTypeUid
+        }
+        
+        console.log("Final prediction request:", predictionRequest);
+
+        submitPrediction(predictionRequest)
+        .then(() => {
+            console.log("Current Prediction for", selectedPredictionType.predictionType, ":", currentPrediction);
+        }).catch((error: unknown) => {
+            console.error("Error submitting fastest lap prediction:", error);
+        });
+
         setSelectedPredictionType(null);
 
     };
@@ -109,11 +166,12 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
     // If a prediction type is selected, show the form
     if (selectedPredictionType) {
         const currentSelection = predictions[selectedPredictionType.predictionTypeUid] || [];
+        const currentDrivers = currentSelection.map(entry => entry.driver);
 
         return (
             <PredictionSelectionForm
                 predictionType={selectedPredictionType}
-                selectedDrivers={currentSelection}
+                selectedDrivers={currentDrivers}
                 onSelectDrivers={handleSelectDrivers}
                 onSave={handlePredictionSelected}
                 drivers={drivers}

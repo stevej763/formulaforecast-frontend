@@ -11,7 +11,9 @@ const HomePage = () => {
   const [showAccount, setShowAccount] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
       localStorage.setItem("activeTab", activeTab);
+    }
   }, [activeTab]);
 
   const renderSelectedTabContent = (tab: string) => {

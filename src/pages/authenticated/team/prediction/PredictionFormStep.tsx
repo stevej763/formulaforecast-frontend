@@ -65,11 +65,12 @@ const PredictionFormStep = ({
               </div>
               {driver ? (
                 <div className="text-center">
-                  <p className="text-white font-bold text-sm">{getDriverName(driver)}</p>
-                  <p className="text-gray-400 text-xs mt-1">{driver.nationality}</p>
+                  <p className="text-white font-bold text-sm">{getDriverName(driver)} - {driver.teamName}</p>
                 </div>
               ) : (
-                <p className="text-gray-500 text-xs text-center">Not selected</p>
+                <div className="text-center">
+                  <p className="text-gray-500 font-bold text-sm">Not selected</p>
+                </div>
               )}
             </div>
           );
@@ -135,6 +136,7 @@ const PredictionFormStep = ({
                       </div>
                     )}
                   </div>
+                  <p className="text-gray-400 text-sm">{driver.teamName}</p>
                   <p className="text-gray-400 text-sm mt-1">{driver.nationality}</p>
                 </div>
               </div>

@@ -65,6 +65,7 @@ const PredictionList = ({
                                                     </span>
                                                     <span className="text-white">{getDriverName(entry.driver)}</span>
                                                     <span className="text-gray-500">({entry.driver.nationality})</span>
+                                                    <span className="text-gray-500 ml-1">- {entry.driver.teamName}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -72,6 +73,7 @@ const PredictionList = ({
                                         <div className="text-sm">
                                             <span className="text-white font-semibold">{getDriverName(driverList[0].driver)}</span>
                                             <span className="text-gray-500 ml-2">({driverList[0].driver.nationality})</span>
+                                            <span className="text-gray-500 ml-1">- {driverList[0].driver.teamName}</span>
                                         </div>
                                     )
                                 ) : (

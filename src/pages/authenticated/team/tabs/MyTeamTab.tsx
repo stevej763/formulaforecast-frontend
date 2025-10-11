@@ -24,7 +24,7 @@ const MyTeamTab = () => {
       .catch(() => {
         setLoading(false);
       });
-  }, [dispatch]);
+  }, [dispatch, creatingTeam]);
 
    if (loading) {
     return (

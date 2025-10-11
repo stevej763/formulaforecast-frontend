@@ -1,5 +1,5 @@
 // src/app/home/account/page.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyTeamTab from "./tabs/MyTeamTab";
 import FfSubTabs from "../../../shared/components/FfSubTabs";
 import PredictionView from "./tabs/PreditionTab";
@@ -13,7 +13,13 @@ export default function TeamView() {
     { key: "stats", label: "Stats" },
   ];
 
-  const [activeTab, setActiveTab] = useState(tabOptions[0].key);
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("teamViewActiveTab") || tabOptions[0].key);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("teamViewActiveTab", activeTab);
+    }
+  }, [activeTab]);
 
 const renderActiveAccountTab = () => {
   switch (activeTab) {
@@ -31,7 +37,7 @@ const renderActiveAccountTab = () => {
   return (
       <div className="w-full h-full flex flex-col">
       <FfSubTabs tabOptions={tabOptions} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 pt-[57px]">
           {renderActiveAccountTab()}
       </div>
     </div>

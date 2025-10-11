@@ -25,11 +25,12 @@ const CountdownToRace = ({ raceWeekendStartDate }: CountdownToRaceProps) => {
   }, [raceWeekendStartDate]);
 
   if (timeLeft.total <= 0) {
-    return <div className="text-green-500 font-bold text-lg">Race has started!</div>;
+    return <div className="text-green-500 font-bold text-lg">Race weekend has started!</div>;
   }
 
   return (
     <div className="flex gap-4 items-center justify-center text-white text-lg font-semibold bg-black/30 rounded-lg p-4 shadow">
+      <div className="text-green-500 font-bold text-lg">Time until race weekend:</div>
       <span className="text-2xl text-red-400 font-bold">{timeLeft.days}</span> days
       <span className="text-2xl text-red-400 font-bold">{timeLeft.hours}</span> hrs
       <span className="text-2xl text-red-400 font-bold">{timeLeft.minutes}</span> min

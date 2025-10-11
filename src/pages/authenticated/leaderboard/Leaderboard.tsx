@@ -32,9 +32,9 @@ const renderActiveLeaderboardTab = () => {
 
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full flex flex-col">
       <FfSubTabs tabOptions={tabOptions} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="w-full max-w-lg bg-white/5 rounded-xl shadow-lg p-8 flex flex-col items-center mt-4 mx-auto">
+      <div className="flex-1 pt-[57px]">
           {renderActiveLeaderboardTab()}
       </div>
     </div>

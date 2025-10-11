@@ -33,6 +33,24 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
     const [selectedPredictionType, setSelectedPredictionType] = useState<PredictionType | null>(null);
     const [predictions, setPredictions] = useState<PredictionsMap>({});
 
+    const processExistingPredictions = (existingPredictions: { predictions?: Record<string, ExistingPrediction> } | null, driversData: { drivers: Driver[] }): PredictionsMap => {
+        if (!existingPredictions || !existingPredictions.predictions) {
+            return {};
+        }
+
+        const existingPredictionsMap: PredictionsMap = {};
+        Object.values(existingPredictions.predictions).forEach((prediction: ExistingPrediction) => {
+            const predictionEntries: PredictionEntry[] = prediction.rankedDriverPredictions.map((detail: DriverPredictionDetail) => {
+                const driver = driversData.drivers.find((d: Driver) => d.driverUid === detail.driverUid);
+                return driver ? { driver, rank: detail.rank } : null;
+            }).filter((entry): entry is PredictionEntry => entry !== null);
+
+            existingPredictionsMap[prediction.predictionTypeUid] = predictionEntries;
+        });
+        
+        return existingPredictionsMap;
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -42,35 +60,17 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
                 ]);
                 setPredictionTypes(predictionTypesData.predictionTypes);
                 setDrivers(driversData.drivers);
-                
-                // Fetch existing predictions separately to handle potential 404 errors gracefully
-                try {
-                    const raceWeekendPredicationSearchParams = {
-                        userTeamUid: team.teamUid,
-                        raceWeekendUid: race.raceWeekendUid
-                    };
-                    const existingPredictions = await fetchExistingPredictionForRaceWeekend(raceWeekendPredicationSearchParams);
-                    
-                    // Process existing predictions and convert to PredictionEntry format
-                    if (existingPredictions && existingPredictions.predictions) {
-                        const existingPredictionsMap: PredictionsMap = {};
-                        
-                        // Iterate over the predictions object (map)
-                        Object.values(existingPredictions.predictions).forEach((prediction: ExistingPrediction) => {
-                            const predictionEntries: PredictionEntry[] = prediction.rankedDriverPredictions.map((detail: DriverPredictionDetail) => {
-                                const driver = driversData.drivers.find((d: Driver) => d.driverUid === detail.driverUid);
-                                return driver ? { driver, rank: detail.rank } : null;
-                            }).filter((entry): entry is PredictionEntry => entry !== null);
 
-                            existingPredictionsMap[prediction.predictionTypeUid] = predictionEntries;
-                        });
-                        
-                        setPredictions(existingPredictionsMap);
-                    }
-                } catch {
-                    console.log("No existing predictions found for this race weekend - starting fresh");
-                    // This is expected for new race weekends, so we don't treat it as an error
-                }
+                const raceWeekendPredictionSearchParams = {
+                    userTeamUid: team.teamUid,
+                    raceWeekendUid: race.raceWeekendUid
+                };
+                const existingPredictions = await fetchExistingPredictionForRaceWeekend(raceWeekendPredictionSearchParams);
+
+                // Process existing predictions and convert to PredictionEntry format
+                const predictionsMap = processExistingPredictions(existingPredictions, driversData);
+                setPredictions(predictionsMap);
+        
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -150,7 +150,6 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
         );
     }
 
-    // If a prediction type is selected, show the form
     if (selectedPredictionType) {
         const currentSelection = predictions[selectedPredictionType.predictionTypeUid] || [];
         const currentDrivers = currentSelection.map(entry => entry.driver);

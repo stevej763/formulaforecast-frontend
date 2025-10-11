@@ -12,7 +12,7 @@ interface FfSubTabsProps {
 
 const FfSubTabs = ({ tabOptions, activeTab, setActiveTab }: FfSubTabsProps) => {
   return (
-    <div className="w-full bg-gray-900 border-b border-gray-700">
+    <div className="fixed top-16 left-0 right-0 z-40 w-full bg-gray-900 border-b border-gray-700 flex-shrink-0">
       <div className="flex w-full">
         {tabOptions.map(tab => (
           <button

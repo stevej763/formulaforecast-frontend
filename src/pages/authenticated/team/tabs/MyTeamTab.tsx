@@ -40,25 +40,28 @@ const MyTeamTab = () => {
     }
 
     return (
-      <div className="w-full max-w-lg bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg p-6 sm:p-8 flex flex-col items-center justify-center border-2 border-red-700/50">
-        <div className="mb-6">
-          <img 
-            src="/helmet-01.png" 
-            alt="No Team" 
-            className="mx-auto rounded-full" 
-            style={{ height: "128px" }} 
-          />
+      <div className="w-full bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-b-xl shadow-2xl overflow-hidden flex flex-col h-full">
+        {/* Empty State Content */}
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-8">
+          <div className="mb-6">
+            <img 
+              src="/helmet-01.png" 
+              alt="No Team" 
+              className="mx-auto rounded-full" 
+              style={{ height: "128px" }} 
+            />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 text-center">No Team Found</h2>
+          <p className="text-sm sm:text-base text-gray-300 mb-6 text-center max-w-sm">
+            You haven't set up your team yet. Get started to join the competition!
+          </p>
+          <button
+            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-150 transform hover:scale-105 active:scale-95"
+            onClick={() => setCreatingTeam(true)}
+          >
+            Create Team
+          </button>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-3 text-center">No Team Found</h2>
-        <p className="text-gray-300 mb-6 text-center max-w-sm">
-          You haven't set up your team yet. Get started to join the competition!
-        </p>
-        <button
-          className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-150 transform hover:scale-105"
-          onClick={() => setCreatingTeam(true)}
-        >
-          Create Team
-        </button>
       </div>
     );
   }
@@ -82,35 +85,16 @@ const MyTeamTab = () => {
   `;
 
   return (
-    <div className="w-full max-w-lg bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-lg overflow-hidden">
+    <div className="w-full bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-b-xl shadow-2xl overflow-hidden flex flex-col h-full">
       {/* Checkered flag banner */}
       <div
-        className="w-full h-24 flex items-center justify-center relative"
+        className="w-full h-20 sm:h-24 flex items-center justify-center relative flex-shrink-0"
         style={{ 
           background: checkeredPattern,
           backgroundColor: team.teamColour 
         }}
       >
-        <span className="text-white text-3xl font-bold drop-shadow-lg">{team.teamName}</span>
-      </div>
-      
-      {/* Team details section */}
-      <div className="p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-300 text-sm">Team Color</span>
-          <div className="flex items-center gap-3">
-            <div 
-              className="w-10 h-10 rounded-full border-2 border-white/30 shadow-lg"
-              style={{ backgroundColor: team.teamColour }}
-            />
-            <span className="text-white font-mono text-sm">{team.teamColour}</span>
-          </div>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-gray-300 text-sm">Team ID</span>
-          <span className="text-white/70 font-mono text-xs">{team.teamUid.slice(0, 8)}...</span>
-        </div>
+        <span className="text-white text-2xl sm:text-3xl font-bold drop-shadow-lg px-4 text-center truncate max-w-full">{team.teamName}</span>
       </div>
     </div>
   );

@@ -23,7 +23,6 @@ const PredictionSelectionForm = ({
 
     return (
         <div className="w-full bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-2xl overflow-hidden flex flex-col h-full">
-            {/* Content */}
             <div className="p-4 sm:p-6 lg:p-8 flex-1 min-h-0 overflow-y-auto">
                 <PredictionFormStep
                     predictionType={predictionType}
@@ -34,7 +33,6 @@ const PredictionSelectionForm = ({
                 />
             </div>
 
-            {/* Footer Navigation */}
             <div className="bg-black/20 p-4 sm:p-6 border-t border-white/10 flex-shrink-0">
                 <div className="flex gap-4">
                     <button

@@ -14,6 +14,8 @@ import { getFlagIcon } from "../../../../shared/utilities/getFlagIcon";
 import { formatEnumText } from "../../../../shared/utilities/formatEnumText";
 import PredictionsSelectionView from "./PredictionsSelectionView";
 import CountdownToRace from "../CountdownToRace";
+import { type UserTeam } from "../../../../api/userTeamApiClient";
+import { getUserTeam } from "../../../../api/userTeamApiClient";
 
 export default function UpcomingRaceDetailView() {
   const [upcomingRace, setUpcomingRace] = useState<RaceWeekendResponse | null>(null);
@@ -22,8 +24,15 @@ export default function UpcomingRaceDetailView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [makingPredictions, setMakingPredictions] = useState(false);
+  const [userTeam, setUserTeam] = useState<UserTeam | null>(null);
 
   useEffect(() => {
+    getUserTeam()
+    .then((teamResponse) => {
+      setUserTeam(teamResponse.teamDetailsDto);
+    });
+
+
     fetchUpcomingRaceWeekend()
       .then((data) => {
         setUpcomingRace(data);
@@ -72,39 +81,54 @@ export default function UpcomingRaceDetailView() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-xl p-6 border-2 border-red-700">
+    <div className="w-full bg-gradient-to-br from-gray-900 via-black to-red-900 rounded-xl shadow-2xl overflow-hidden flex flex-col h-full">
       {/* Race Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <span className="text-4xl">
-            {getFlagIcon(race.raceName)}
-          </span>
-          <div>
-            <h2 className="text-2xl font-bold text-white">
-              {formatEnumText(race.raceName)}
-            </h2>
-            <p className="text-sm text-gray-400">
-              {formatRaceDates(race.raceWeekendStartDate, race.raceWeekendEndDate)}
-            </p>
+      <div className="bg-black/20 p-4 sm:p-6 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">
+          <div className="flex items-center gap-3 flex-1">
+            <span className="text-3xl sm:text-4xl flex-shrink-0">
+              {getFlagIcon(race.raceName)}
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-white truncate">
+                {formatEnumText(race.raceName)}
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-400">
+                {formatRaceDates(race.raceWeekendStartDate, race.raceWeekendEndDate)}
+              </p>
+            </div>
+          </div>
+          <div className="flex-shrink-0 self-start sm:self-auto">
+            <RaceStatusDetail status={race.raceWeekendStatus} />
           </div>
         </div>
-        <RaceStatusDetail status={race.raceWeekendStatus} />
       </div>
 
       {/* Countdown Section */}
-      <div className="mb-6">
+      <div className="p-4 sm:p-6 border-b border-white/10 flex-shrink-0">
         <CountdownToRace raceWeekendStartDate={race.raceWeekendStartDate} />
       </div>
 
-      {/* Action Button */}
+      {/* Action Button - Only show during race week */}
       {race.raceWeekendStatus === "RACE_WEEK" && (
-        <div className="flex justify-end">
-          <button
-            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-150 transform hover:scale-105"
-            onClick={() => setMakingPredictions(true)}
-          >
-            Make Predictions
-          </button>
+        <div className="bg-black/20 p-4 sm:p-6 border-t border-white/10 flex-shrink-0 mt-auto">
+          {userTeam ? (
+            <button
+              className="w-full sm:w-auto sm:ml-auto sm:block px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-150 transform hover:scale-105 active:scale-95"
+              onClick={() => setMakingPredictions(true)}
+            >
+              Make Predictions
+            </button>
+          ) : (
+            <div className="text-center">
+              <p className="text-gray-300 mb-3">
+                You need to create a team before making predictions
+              </p>
+              <p className="text-gray-400 text-sm">
+                Head to the <span className="text-white font-semibold">My Team</span> tab to set up your team
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>

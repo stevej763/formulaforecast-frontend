@@ -1,5 +1,9 @@
 import axiosInstance from "./axiosInstance";
 
+export interface RaceWeekendPredictionsSearchParams {
+    userTeamUid: string;
+    raceWeekendUid: string;
+}
 export interface DriverPrediction {
     userTeamUid: string;
     raceWeekendUid: string;
@@ -64,10 +68,9 @@ export const fetchPredictionTypes = async () : Promise<PredictionTypes> => {
     }
 };
 
-export const fetchExistingPredictionForRaceWeekend = async (userTeamUid: string, raceWeekendUid: string): Promise<ExistingPredictionResponse> => {
+export const fetchExistingPredictionForRaceWeekend = async (request: RaceWeekendPredictionsSearchParams): Promise<ExistingPredictionResponse> => {
     try {
-        const response = await axiosInstance.get(`/api/v1/predictions/${userTeamUid}/${raceWeekendUid}`);
-        console.log("Fetched existing predictions:", response.data);
+        const response = await axiosInstance.get(`/api/v1/predictions/${request.userTeamUid}/${request.raceWeekendUid}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching existing predictions:", error);

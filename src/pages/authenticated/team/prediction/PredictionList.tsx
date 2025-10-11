@@ -2,8 +2,13 @@ import type { PredictionType } from "../../../../api/predictionsApiClient";
 import type { Driver } from "../../../../api/driversApiClient";
 import { formatEnumText } from "../../../../shared/utilities/formatEnumText";
 
+interface PredictionEntry {
+    driver: Driver;
+    rank: number;
+}
+
 interface PredictionsMap {
-    [predictionTypeUid: string]: Driver[];
+    [predictionTypeUid: string]: PredictionEntry[];
 }
 
 interface PredictionListProps {
@@ -53,20 +58,20 @@ const PredictionList = ({
                                 {driverList.length > 0 ? (
                                     isTopThree ? (
                                         <div className="space-y-1">
-                                            {driverList.map((driver, index) => (
-                                                <div key={driver.driverUid} className="flex items-center gap-2 text-sm">
+                                            {driverList.map((entry) => (
+                                                <div key={entry.driver.driverUid} className="flex items-center gap-2 text-sm">
                                                     <span className="text-yellow-400 font-bold">
-                                                        {index + 1}.
+                                                        {entry.rank}.
                                                     </span>
-                                                    <span className="text-white">{getDriverName(driver)}</span>
-                                                    <span className="text-gray-500">({driver.nationality})</span>
+                                                    <span className="text-white">{getDriverName(entry.driver)}</span>
+                                                    <span className="text-gray-500">({entry.driver.nationality})</span>
                                                 </div>
                                             ))}
                                         </div>
                                     ) : (
                                         <div className="text-sm">
-                                            <span className="text-white font-semibold">{getDriverName(driverList[0])}</span>
-                                            <span className="text-gray-500 ml-2">({driverList[0].nationality})</span>
+                                            <span className="text-white font-semibold">{getDriverName(driverList[0].driver)}</span>
+                                            <span className="text-gray-500 ml-2">({driverList[0].driver.nationality})</span>
                                         </div>
                                     )
                                 ) : (

@@ -180,6 +180,8 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
                 predictions={predictions}
                 onPredictionTypeSelect={setSelectedPredictionType}
                 requiresTopThree={requiresTopThree}
+                showPredictionDescription={true}
+                isEditable={true}
             />
 
             {/* Footer */}

@@ -13,8 +13,7 @@ interface UpcomingRaceDetailViewProps {
 }
 
 export default function UpcomingRaceDetailView({ 
-  upcomingRace,
-  team
+  upcomingRace
 }: UpcomingRaceDetailViewProps) {
   const [makingPredictions, setMakingPredictions] = useState(false);
 

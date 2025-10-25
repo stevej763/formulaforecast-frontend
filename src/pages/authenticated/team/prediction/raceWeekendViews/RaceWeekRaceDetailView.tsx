@@ -1,10 +1,7 @@
 // src/app/home/navigation/RaceWeekRaceDetailView.tsx
 "use client";
 import { useState } from "react";
-import {
-    type RaceWeekend,
-  type RaceWeekendResponse,
-} from "../../../../../api/raceWeekendApiClient";
+import { type RaceWeekend } from "../../../../../api/raceWeekendApiClient";
 import PredictionsSelectionView from "../PredictionsSelectionView";
 import CountdownToRace from "../../CountdownToRace";
 import RaceHeader from "../../components/RaceHeader";

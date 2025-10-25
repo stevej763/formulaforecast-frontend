@@ -85,12 +85,6 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
         return TOP_THREE_TYPES.some(type => predictionType.toUpperCase().includes(type));
     };
 
-    // Helper to get full driver name
-    const getDriverName = (driver: Driver) => {
-        return driver.nickname || `${driver.firstName} ${driver.lastName}`;
-    };
-
-
     // Get completion count
     const getCompletionCount = () => {
         return predictionTypes.filter((type) => {
@@ -186,7 +180,6 @@ const PredictionsSelectionView = ({ race, onComplete }: PredictionsSelectionView
                 predictions={predictions}
                 onPredictionTypeSelect={setSelectedPredictionType}
                 requiresTopThree={requiresTopThree}
-                getDriverName={getDriverName}
             />
 
             {/* Footer */}

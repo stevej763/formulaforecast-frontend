@@ -56,10 +56,6 @@ export default function LiveRaceWeekendView({
     return TOP_THREE_TYPES.some(type => predictionType.toUpperCase().includes(type));
   };
 
-  const getDriverName = (driver: Driver) => {
-    return driver.nickname || `${driver.firstName} ${driver.lastName}`;
-  };
-
   // Convert predictions to PredictionList format
   const convertedPredictions = predictions ? Object.keys(predictions).reduce((acc, predictionTypeUid) => {
     const prediction = predictions[predictionTypeUid];
@@ -87,7 +83,8 @@ export default function LiveRaceWeekendView({
         predictions={convertedPredictions}
         onPredictionTypeSelect={() => {}}
         requiresTopThree={requiresTopThree}
-        getDriverName={getDriverName}
+        showPredictionDescription={false}
+        isEditable={false}
       />
     </div>
   );

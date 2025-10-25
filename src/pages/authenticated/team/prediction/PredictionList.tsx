@@ -16,16 +16,24 @@ interface PredictionListProps {
     predictions: PredictionsMap;
     onPredictionTypeSelect: (predictionType: PredictionType) => void;
     requiresTopThree: (predictionType: string) => boolean;
-    getDriverName: (driver: Driver) => string;
+    showPredictionDescription: boolean,
+    isEditable: boolean
 }
 
 const PredictionList = ({ 
     predictionTypes, 
     predictions, 
     onPredictionTypeSelect, 
-    requiresTopThree, 
-    getDriverName 
+    requiresTopThree,
+    showPredictionDescription,
+    isEditable
 }: PredictionListProps) => {
+
+
+    const getDriverName = (driver: Driver) => {
+        return driver.nickname || `${driver.firstName} ${driver.lastName}`;
+    };
+
     return (
         <div className="p-4 sm:p-6 space-y-4 overflow-y-auto ff-scrollbar flex-1 min-h-0">
             {predictionTypes.map((type) => {
@@ -33,12 +41,17 @@ const PredictionList = ({
                 const isTopThree = requiresTopThree(type.predictionType);
                 const required = isTopThree ? 3 : 1;
                 const isComplete = driverList.length === required;
-                
+
                 return (
                     <button
                         key={type.predictionTypeUid}
-                        onClick={() => onPredictionTypeSelect(type)}
-                        className="w-full text-left bg-white/5 hover:bg-white/10 border-2 border-white/20 hover:border-red-400/50 rounded-lg p-4 transition-all duration-200"
+                        onClick={isEditable ? () => onPredictionTypeSelect(type) : undefined}
+                        disabled={!isEditable}
+                        className={`w-full text-left bg-white/5 border-2 border-white/20 rounded-lg p-4 transition-all duration-200 ${
+                            isEditable 
+                                ? 'hover:bg-white/10 hover:border-red-400/50 cursor-pointer' 
+                                : 'cursor-default'
+                        }`}
                     >
                         <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
@@ -52,7 +65,7 @@ const PredictionList = ({
                                         </svg>
                                     )}
                                 </div>
-                                <p className="text-gray-400 text-sm mb-3">{type.description}</p>
+                                {showPredictionDescription && <p className="text-gray-400 text-sm mb-3">{type.description}</p>}
                                 
                                 {/* Show current selections */}
                                 {driverList.length > 0 ? (
@@ -86,10 +99,10 @@ const PredictionList = ({
                                 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap
                                 ${isComplete 
                                     ? 'bg-green-600/20 text-green-400 border border-green-500/50' 
-                                    : 'bg-gray-700/20 text-gray-400 border border-gray-600/50'
+                                    : 'bg-red-700/20 text-red-400 border border-red-600/50'
                                 }
                             `}>
-                                {isComplete ? 'Complete' : isTopThree ? '0/3' : '0/1'}
+                                {isComplete ? 'Submitted' : "Not Submitted"}
                             </div>
                         </div>
                     </button>

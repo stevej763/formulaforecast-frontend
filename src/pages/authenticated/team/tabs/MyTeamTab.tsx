@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import LoaderSpinner from "../../../../shared/components/LoaderSpinner";
 import TeamCreationView from "../TeamCreationView";
 import { useDispatch } from "react-redux";
-import { setUserTeam } from "../../../../store/teamSlice";
+import { setUserTeam, useUserTeam } from "../../../../store/teamSlice";
 
 const MyTeamTab = () => {
 
-  const [team, setTeam] = useState<UserTeam | null>(null);
+  const currentUserTeam = useUserTeam();
+  const [team, setTeam] = useState<UserTeam>(currentUserTeam);
   const [loading, setLoading] = useState(true);
   const [creatingTeam, setCreatingTeam] = useState(false)
   const dispatch = useDispatch();

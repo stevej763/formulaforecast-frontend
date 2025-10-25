@@ -24,7 +24,12 @@ const CountdownToRace = ({ raceWeekendStartDate }: CountdownToRaceProps) => {
     return () => clearInterval(interval);
   }, [raceWeekendStartDate]);
 
-  if (timeLeft.total <= 0) {
+  // Check if current date is the race weekend start date
+  const now = new Date();
+  const raceStartDate = new Date(raceWeekendStartDate);
+  const isRaceWeekend = now.toDateString() === raceStartDate.toDateString();
+
+  if (timeLeft.total <= 0 || isRaceWeekend) {
     return <div className="text-green-500 font-bold text-lg">Race weekend has started!</div>;
   }
 
